@@ -13,18 +13,20 @@ func Create(title string) *Menu {
 	}
 }
 
-func (m *Menu) Page(name string, page *MenuPage) *Menu {
-	if _, ok := m.pages[name]; ok {
+func (m *Menu) Page(title string) *MenuPage {
+	if _, ok := m.pages[title]; ok {
 		panic("the page with given name already exists!")
 	}
 
-	m.pages[name] = page
+	p := page(title, m)
+	m.pages[title] = p
 	if m.currentPage == "" {
-		m.currentPage = name
+		m.currentPage = title
 	}
-	return m
+
+	return p
 }
 
 func (m *Menu) String() string {
-	return m.title + "\n\t" + m.pages[m.currentPage].String()
+	return m.title + "\n\t" + m.pages[m.currentPage].str()
 }

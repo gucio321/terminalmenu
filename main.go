@@ -3,7 +3,6 @@ package main
 import "fmt"
 
 func main() {
-	menu := Create("Test Menu")
-	menu.Page("main", Page("Test page"))
+	menu := Create("Test Menu").Page("Test page").Back()
 	fmt.Println(menu)
 }
