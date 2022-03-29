@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gucio321/clear"
+	"github.com/gucio321/go-clear"
 )
 
 type Menu struct {
