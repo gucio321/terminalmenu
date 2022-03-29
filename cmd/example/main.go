@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"github.com/gucio321/terminalmenu/constructor"
+	terminalmenu "github.com/gucio321/terminalmenu/pkg"
 )
 
 func main() {
-	constructor.Create("Test Menu").
+	terminalmenu.Create("Test Menu", true).
 		MainPage("Main page").
 		Item("Hello World", func() {
 			fmt.Println("Hello World")

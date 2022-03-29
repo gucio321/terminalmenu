@@ -6,6 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/gucio321/clear"
 )
 
 type Menu struct {
@@ -15,14 +17,16 @@ type Menu struct {
 	shouldExit  bool
 
 	reader *bufio.Reader
+	clear  bool
 }
 
-func Create(title string) *Menu {
+func Create(title string, clear bool) *Menu {
 	return &Menu{
 		title: title,
 		pages: make(map[string]*MenuPage),
 
 		reader: bufio.NewReader(os.Stdin),
+		clear:  clear,
 	}
 }
 
@@ -51,6 +55,10 @@ func (m *Menu) String() string {
 
 func (m *Menu) Run() error {
 	for !m.shouldExit {
+		if m.clear {
+			clear.Clear()
+		}
+
 		fmt.Println(m)
 		fmt.Print("What to do?: ")
 		text, err := m.reader.ReadString('\n')
