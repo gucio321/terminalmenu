@@ -1,9 +1,10 @@
 package main
 
 type Menu struct {
-	title       string
-	currentPage string
-	pages       map[string]*MenuPage
+	title        string
+	previousPage string
+	currentPage  string
+	pages        map[string]*MenuPage
 }
 
 func Create(title string) *Menu {
@@ -20,13 +21,19 @@ func (m *Menu) Page(title string) *MenuPage {
 
 	p := page(title, m)
 	m.pages[title] = p
-	if m.currentPage == "" {
-		m.currentPage = title
-	}
+
+	m.previousPage = m.currentPage
+	m.currentPage = title
 
 	return p
 }
 
 func (m *Menu) String() string {
-	return m.title + "\n\t" + m.pages[m.currentPage].str()
+	result := m.title + "\n"
+	currentPage := m.pages[m.currentPage]
+	for _, item := range currentPage.str() {
+		result += "\t" + item + "\n"
+	}
+
+	return result
 }
