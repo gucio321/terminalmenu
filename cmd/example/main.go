@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	terminalmenu.Create("Test Menu", true).
+	<-terminalmenu.Create("Test Menu", true).
 		MainPage("Main page").
 		Item("Hello World", func() {
 			fmt.Println("Hello World")

@@ -4,6 +4,7 @@ import (
 	"strconv"
 )
 
+// MenuPage represents a page of menu
 type MenuPage struct {
 	pageTitle    string
 	previousPage string
@@ -20,11 +21,14 @@ func page(title string, menuCache *Menu) *MenuPage {
 	}
 }
 
+// Item adds a single item to menu.
+// You can use it to call your own callback when item selected.
 func (m *MenuPage) Item(name string, callback func()) *MenuPage {
 	m.items = append(m.items, item(name, callback))
 	return m
 }
 
+// Subpage adds another subpage to menu.
 func (m *MenuPage) Subpage(title string) *MenuPage {
 	if _, ok := m.menuCache.pages[title]; ok {
 		panic("the page with given name already exists!")
@@ -42,17 +46,21 @@ func (m *MenuPage) Subpage(title string) *MenuPage {
 	return p
 }
 
+// Exit gets back to menu base
 func (m *MenuPage) Exit() *Menu {
 	m.last = item("Exit", func() {
 		m.menuCache.shouldExit = true
 	})
+
 	return m.menuCache
 }
 
+// Back returns back to previous menu page
 func (m *MenuPage) Back() *MenuPage {
-	m.last = item("Exit", func() {
+	m.last = item("Back", func() {
 		m.menuCache.currentPage = m.previousPage
 	})
+
 	return m.menuCache.pages[m.previousPage]
 }
 
