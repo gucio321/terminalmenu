@@ -1,5 +1,6 @@
 package terminalmenu
 
+// MenuItem represents an item in menu.
 type MenuItem struct {
 	name     string
 	callback func()

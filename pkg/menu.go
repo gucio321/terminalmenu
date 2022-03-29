@@ -10,7 +10,7 @@ import (
 	"github.com/gucio321/go-clear"
 )
 
-// Menu represents main menu base. It is used to controll the whole
+// Menu represents main menu base. It is used to control the whole
 // menu structure. It is a kind of manager for menu pages.
 type Menu struct {
 	title       string
@@ -23,20 +23,20 @@ type Menu struct {
 }
 
 // Create creates a new Menu instance.
-func Create(title string, clear bool) *Menu {
+func Create(title string, shouldClear bool) *Menu {
 	return &Menu{
 		title: title,
 		pages: make(map[string]*MenuPage),
 
 		reader: bufio.NewReader(os.Stdin),
-		clear:  clear,
+		clear:  shouldClear,
 	}
 }
 
 // MainPage adds the main page of menu.
 // It should be called once per *Menu instance
 // Call (*MenuPage).Exit() to get current (*Menu) instance and finish
-// setup by calling Run
+// setup by calling Run.
 func (m *Menu) MainPage(title string) *MenuPage {
 	if _, ok := m.pages[title]; ok {
 		panic("the page with given name already exists!")
@@ -50,10 +50,11 @@ func (m *Menu) MainPage(title string) *MenuPage {
 	return p
 }
 
-// String implements fmt.Stringer and allows you to print the menu
+// String implements fmt.Stringer and allows you to print the menu.
 func (m *Menu) String() string {
 	result := m.title + "\n"
 	currentPage := m.pages[m.currentPage]
+
 	for _, item := range currentPage.str() {
 		result += "\t" + item + "\n"
 	}
@@ -63,28 +64,34 @@ func (m *Menu) String() string {
 
 // Run start the main loop of the menu in goroutine.
 // It returns chan for error messages.
-// recieve from it to paus your goroutine until the menu ends (gets exited)
+// receive from it to paus your goroutine until the menu ends (gets exited).
 func (m *Menu) Run() chan error {
 	result := make(chan error, 1)
 
 	go func() {
 		for !m.shouldExit {
 			if m.clear {
-				clear.Clear()
+				if err := clear.Clear(); err != nil {
+					result <- err
+
+					return
+				}
 			}
 
 			fmt.Println(m)
 			fmt.Print("What to do?: ")
+
 			text, err := m.reader.ReadString('\n')
 			if err != nil {
 				result <- fmt.Errorf("error reading user action: %w", err)
+
 				return
 			}
 
 			text = strings.ReplaceAll(text, "\n", "")
 			text = strings.ReplaceAll(text, "\r", "")
 
-			num, _ := strconv.Atoi(text)
+			num, err := strconv.Atoi(text)
 			if err != nil {
 				continue
 			}
