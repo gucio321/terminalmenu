@@ -1,4 +1,4 @@
-package constructor
+package terminalmenu
 
 type MenuItem struct {
 	name     string

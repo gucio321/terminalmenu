@@ -1,4 +1,4 @@
-package constructor
+package terminalmenu
 
 import (
 	"bufio"
