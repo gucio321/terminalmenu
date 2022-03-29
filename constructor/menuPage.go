@@ -1,7 +1,6 @@
-package main
+package constructor
 
 import (
-	"os"
 	"strconv"
 )
 
@@ -28,7 +27,7 @@ func (m *MenuPage) Item(name string, callback func()) *MenuPage {
 func (m *MenuPage) Back() *Menu {
 	m.last = item("Back", func() {
 		if m.menuCache.previousPage == "" {
-			os.Exit(0)
+			m.menuCache.shouldExit = true
 		}
 
 		m.menuCache.currentPage = m.menuCache.previousPage

@@ -1,4 +1,4 @@
-package main
+package constructor
 
 type MenuItem struct {
 	name     string

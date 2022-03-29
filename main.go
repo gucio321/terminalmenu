@@ -1,8 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/gucio321/terminalmenu/constructor"
+)
 
 func main() {
-	menu := Create("Test Menu").Page("Test page").Back()
-	fmt.Println(menu)
+	constructor.Create("Test Menu").Page("Test page").Item("Hello World", func() { fmt.Println("Hello World") }).Back().Run()
 }
