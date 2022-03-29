@@ -5,10 +5,11 @@ import (
 )
 
 type MenuPage struct {
-	pageTitle string
-	items     []*MenuItem
-	last      *MenuItem
-	menuCache *Menu
+	pageTitle    string
+	previousPage string
+	items        []*MenuItem
+	last         *MenuItem
+	menuCache    *Menu
 }
 
 func page(title string, menuCache *Menu) *MenuPage {
@@ -24,15 +25,35 @@ func (m *MenuPage) Item(name string, callback func()) *MenuPage {
 	return m
 }
 
-func (m *MenuPage) Back() *Menu {
-	m.last = item("Back", func() {
-		if m.menuCache.previousPage == "" {
-			m.menuCache.shouldExit = true
-		}
+func (m *MenuPage) Subpage(title string) *MenuPage {
+	if _, ok := m.menuCache.pages[title]; ok {
+		panic("the page with given name already exists!")
+	}
 
-		m.menuCache.currentPage = m.menuCache.previousPage
+	p := page(title, m.menuCache)
+	m.menuCache.pages[title] = p
+
+	m.Item(p.pageTitle, func() {
+		m.menuCache.currentPage = p.pageTitle
+	})
+
+	p.previousPage = m.pageTitle
+
+	return p
+}
+
+func (m *MenuPage) Exit() *Menu {
+	m.last = item("Exit", func() {
+		m.menuCache.shouldExit = true
 	})
 	return m.menuCache
+}
+
+func (m *MenuPage) Back() *MenuPage {
+	m.last = item("Exit", func() {
+		m.menuCache.currentPage = m.previousPage
+	})
+	return m.menuCache.pages[m.previousPage]
 }
 
 func (m *MenuPage) str() (entries []string) {

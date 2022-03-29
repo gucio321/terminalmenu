@@ -9,11 +9,10 @@ import (
 )
 
 type Menu struct {
-	title        string
-	previousPage string
-	currentPage  string
-	pages        map[string]*MenuPage
-	shouldExit   bool
+	title       string
+	currentPage string
+	pages       map[string]*MenuPage
+	shouldExit  bool
 
 	reader *bufio.Reader
 }
@@ -27,7 +26,7 @@ func Create(title string) *Menu {
 	}
 }
 
-func (m *Menu) Page(title string) *MenuPage {
+func (m *Menu) MainPage(title string) *MenuPage {
 	if _, ok := m.pages[title]; ok {
 		panic("the page with given name already exists!")
 	}
@@ -35,7 +34,6 @@ func (m *Menu) Page(title string) *MenuPage {
 	p := page(title, m)
 	m.pages[title] = p
 
-	m.previousPage = m.currentPage
 	m.currentPage = title
 
 	return p

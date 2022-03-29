@@ -7,5 +7,12 @@ import (
 )
 
 func main() {
-	constructor.Create("Test Menu").Page("Test page").Item("Hello World", func() { fmt.Println("Hello World") }).Back().Run()
+	constructor.Create("Test Menu").
+		MainPage("Main page").
+		Item("Hello World", func() {
+			fmt.Println("Hello World")
+		}).
+		Subpage("Test Page").Item("print test", func() { fmt.Println("test") }).Back().
+		Exit().
+		Run()
 }
