@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -26,6 +27,7 @@ func getResponse(prompt string, reader *bufio.Reader) (string, error) {
 
 	text = strings.ReplaceAll(text, "\n", "")
 	text = strings.ReplaceAll(text, "\r", "")
+
 	return text, nil
 }
 
@@ -35,6 +37,28 @@ func GetResponse(prompt string) (string, error) {
 
 func (u *UtilsCache) GetResponse(prompt string) (string, error) {
 	return getResponse(prompt, u.reader)
+}
+
+func getNumber(prompt string, reader *bufio.Reader) (int, error) {
+	str, err := getResponse(prompt, reader)
+	if err != nil {
+		return 0, err
+	}
+
+	result, err := strconv.Atoi(str)
+	if err != nil {
+		return 0, fmt.Errorf("error converting user answer to intager: %w", err)
+	}
+
+	return result, nil
+}
+
+func GetNumber(prompt string) (int, error) {
+	return getNumber(prompt, bufio.NewReader(os.Stdin))
+}
+
+func (u *UtilsCache) GetNumber(prompt string) (int, error) {
+	return getNumber(prompt, u.reader)
 }
 
 func promptEnter(prompt string, reader *bufio.Reader) error {

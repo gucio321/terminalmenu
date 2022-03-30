@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	terminalmenu "github.com/gucio321/terminalmenu/pkg"
 	"github.com/gucio321/terminalmenu/pkg/menuutils"
 )
 
 func main() {
-	<-terminalmenu.Create("Test Menu", true).
+	err := <-terminalmenu.Create("Test Menu", true).
 		ChangeDictionaryDef(terminalmenu.DictionaryKeyExit, "Exit from menu").
 		MainPage("Main page").
 		Item("Hello World", func() {
@@ -21,4 +22,7 @@ func main() {
 	}).Back().
 		Exit().
 		Run()
+	if err != nil {
+		log.Fatal(err)
+	}
 }

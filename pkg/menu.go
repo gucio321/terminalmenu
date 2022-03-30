@@ -1,9 +1,9 @@
 package terminalmenu
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/gucio321/go-clear"
 
@@ -82,19 +82,15 @@ func (m *Menu) Run() chan error {
 
 			fmt.Println(m)
 
-			text, err := m.utils.GetResponse(m.dictionary[DictionaryKeyAskForNumber] + " ")
-			if err != nil {
-				result <- fmt.Errorf("error reading user action: %w", err)
-
-				return
-			}
-
-			text = strings.ReplaceAll(text, "\n", "")
-			text = strings.ReplaceAll(text, "\r", "")
-
-			num, err := strconv.Atoi(text)
-			if err != nil {
+			num, err := m.utils.GetNumber(m.dictionary[DictionaryKeyAskForNumber] + " ")
+			switch {
+			case err == nil:
+				// noop
+			// it is casual user enters invalid number
+			case errors.Is(err, strconv.ErrSyntax):
 				continue
+			default:
+				result <- err
 			}
 
 			if num > len(m.pages[m.currentPage].items) {
