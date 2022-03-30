@@ -6,6 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/buger/goterm"
 )
 
 type UtilsCache struct {
@@ -73,4 +75,12 @@ func PromptEnter(prompt string) error {
 
 func (u *UtilsCache) PressEnter(prompt string) error {
 	return promptEnter(prompt, u.reader)
+}
+
+func CenterLine(line string) (result string) {
+	for i := 0; i < (goterm.Width()-len(line))/2; i++ {
+		result += " "
+	}
+
+	return result + line
 }

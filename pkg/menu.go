@@ -54,7 +54,9 @@ func (m *Menu) MainPage(title string) *MenuPage {
 
 // String implements fmt.Stringer and allows you to print the menu.
 func (m *Menu) String() string {
-	result := m.title + "\n"
+	result := ""
+
+	result += menuutils.CenterLine(m.title) + "\n"
 	currentPage := m.pages[m.currentPage]
 
 	for _, item := range currentPage.str() {
