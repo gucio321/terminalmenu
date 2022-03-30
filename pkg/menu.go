@@ -112,3 +112,9 @@ func (m *Menu) Run() chan error {
 
 	return result
 }
+
+// GetUtils returns currently used utils instance in case you don't want to use yours
+// e.g. if you want to increase preformency.
+func (m *Menu) GetUtils() *menuutils.UtilsCache {
+	return m.utils
+}
