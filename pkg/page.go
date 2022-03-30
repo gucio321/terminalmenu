@@ -49,7 +49,7 @@ func (m *MenuPage) Subpage(title string) *MenuPage {
 
 // Exit gets back to menu base.
 func (m *MenuPage) Exit() *Menu {
-	m.last = item("Exit", func() {
+	m.last = item(m.menuCache.dictionary[DictionaryKeyExit], func() {
 		m.menuCache.shouldExit = true
 	})
 
@@ -58,7 +58,7 @@ func (m *MenuPage) Exit() *Menu {
 
 // Back returns back to previous menu page.
 func (m *MenuPage) Back() *MenuPage {
-	m.last = item("Back", func() {
+	m.last = item(m.menuCache.dictionary[DictionaryKeyBack], func() {
 		m.menuCache.currentPage = m.previousPage
 	})
 

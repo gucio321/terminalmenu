@@ -9,6 +9,7 @@ import (
 
 func main() {
 	<-terminalmenu.Create("Test Menu", true).
+		ChangeDictionaryDef(terminalmenu.DictionaryKeyExit, "Exit from menu").
 		MainPage("Main page").
 		Item("Hello World", func() {
 			fmt.Println("Hello World")
