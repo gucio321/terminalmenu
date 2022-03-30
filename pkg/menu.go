@@ -1,13 +1,13 @@
 package terminalmenu
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 
 	"github.com/gucio321/go-clear"
+
+	"github.com/gucio321/terminalmenu/pkg/menuutils"
 )
 
 // Menu represents main menu base. It is used to control the whole
@@ -18,8 +18,8 @@ type Menu struct {
 	pages       map[string]*MenuPage
 	shouldExit  bool
 
-	reader *bufio.Reader
-	clear  bool
+	utils *menuutils.UtilsCache
+	clear bool
 }
 
 // Create creates a new Menu instance.
@@ -28,8 +28,8 @@ func Create(title string, shouldClear bool) *Menu {
 		title: title,
 		pages: make(map[string]*MenuPage),
 
-		reader: bufio.NewReader(os.Stdin),
-		clear:  shouldClear,
+		utils: menuutils.Utils(),
+		clear: shouldClear,
 	}
 }
 
@@ -79,9 +79,8 @@ func (m *Menu) Run() chan error {
 			}
 
 			fmt.Println(m)
-			fmt.Print("What to do?: ")
 
-			text, err := m.reader.ReadString('\n')
+			text, err := m.utils.GetResponse("What to do?: ")
 			if err != nil {
 				result <- fmt.Errorf("error reading user action: %w", err)
 
